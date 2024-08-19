@@ -42,10 +42,12 @@ This project is deployed on GitHub Pages. You can access the live version [here]
 
 ## Future Improvements
 
-- **UI Enhancements:** Improve the visual design for a better user experience.
-- **Data Persistence:** Add functionality to save and load data using local storage.
-- **Mobile Responsiveness:** Optimize the app for better usage on mobile devices.
-- **Advanced Features:** Include daily progress tracking, calorie graphs, and goal setting.
+- **UI Enhancements**: Improve the visual design for a better user experience.
+- **Mobile Responsiveness**: Optimize the app for better usage on mobile devices.
+- **Advanced Features**:
+  - **Download Report/PDF**: Implement a feature that allows users to download a report of their daily or weekly calorie data as a PDF.
+  - **Calorie Graphs**: Incorporate graphs to visually track calorie intake, calories burned, and overall progress over time, using libraries like Chart.js.
+
 
 ## Contributing
 
