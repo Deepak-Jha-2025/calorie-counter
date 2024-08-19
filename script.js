@@ -24,16 +24,38 @@ function addEntry() {
     const targetInputContainer = document.querySelector(`#${entryDropdown.value} .input-container`);
     const entryNumber = targetInputContainer.querySelectorAll('input[type="text"]').length + 1;
     const HTMLString = `
-  <label for="${entryDropdown.value}-${entryNumber}-name">Entry ${entryNumber} Name</label>
-  <input type="text" id="${entryDropdown.value}-${entryNumber}-name" placeholder="Name" />
-  <label for="${entryDropdown.value}-${entryNumber}-calories">Entry ${entryNumber} Calories</label>
-  <input
-    type="number"
-    min="0"
-    id="${entryDropdown.value}-${entryNumber}-calories"
-    placeholder="Calories"
-  />`;
+    <div class="entry" id="${entryDropdown.value}-${entryNumber}">
+        <label for="${entryDropdown.value}-${entryNumber}-name">Entry ${entryNumber} Name</label>
+        <input type="text" id="${entryDropdown.value}-${entryNumber}-name" placeholder="Name" />
+        <label for="${entryDropdown.value}-${entryNumber}-calories">Entry ${entryNumber} Calories</label>
+        <input
+            type="number"
+            min="0"
+            id="${entryDropdown.value}-${entryNumber}-calories"
+            placeholder="Calories"
+        />
+        <button type="button" onclick="removeEntry('${entryDropdown.value}-${entryNumber}')" id="${entryDropdown.value}-${entryNumber}-remove" class="remove-entry">Remove</button>
+    </div>`;
+    // onclick="removeEntry('${entryDropdown.value}-${entryNumber}')"
     targetInputContainer.insertAdjacentHTML('beforeend', HTMLString); // Insert new input fields into the DOM
+
+    // Event use karna hai to entryDropdown ke basis pe nai kar sakte, uske independent
+    // banana hoga
+    
+    // const removeEntryButton = document.getElementById(`${entryDropdown.value}-${entryNumber}-remove`);
+    // if (removeEntryButton) {
+    //     removeEntryButton.addEventListener('click', () => {
+    //         removeEntry(`${entryDropdown.value}-${entryNumber}`)
+    //     })
+    // }
+}
+
+// Function to remove a newly added entry input field
+function removeEntry(entryId) {
+    const entryElement = document.getElementById(entryId);
+    if (entryElement) {
+        entryElement.remove();
+    }
 }
 
 // Function to calculate total calories and update the output
