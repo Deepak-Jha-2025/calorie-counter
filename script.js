@@ -34,28 +34,56 @@ function addEntry() {
             id="${entryDropdown.value}-${entryNumber}-calories"
             placeholder="Calories"
         />
-        <button type="button" onclick="removeEntry('${entryDropdown.value}-${entryNumber}')" id="${entryDropdown.value}-${entryNumber}-remove" class="remove-entry">Remove</button>
+        <button type="button" class="remove-entry">Remove</button>
     </div>`;
-    // onclick="removeEntry('${entryDropdown.value}-${entryNumber}')"
-    targetInputContainer.insertAdjacentHTML('beforeend', HTMLString); // Insert new input fields into the DOM
 
-    // Event use karna hai to entryDropdown ke basis pe nai kar sakte, uske independent
-    // banana hoga
-    
-    // const removeEntryButton = document.getElementById(`${entryDropdown.value}-${entryNumber}-remove`);
-    // if (removeEntryButton) {
-    //     removeEntryButton.addEventListener('click', () => {
-    //         removeEntry(`${entryDropdown.value}-${entryNumber}`)
-    //     })
-    // }
+    targetInputContainer.insertAdjacentHTML('beforeend', HTMLString); // Insert new input fields into the DOM
 }
 
-// Function to remove a newly added entry input field
-function removeEntry(entryId) {
-    const entryElement = document.getElementById(entryId);
-    if (entryElement) {
-        entryElement.remove();
+// Event listener for handling remove buttons
+calorieCounter.addEventListener('click', (e) => {
+    // Check if the clicked element is a remove button
+    if (e.target?.classList.contains('remove-entry')) {
+        // entryToRemove.innerHTML = ''; // only clears the content, doesn't delete the div
+        // const entryToRemove = e.target.(parentNode OR parentElement);
+        // const entryToRemove = e.target.closest('.entry');
+        // entryToRemove.remove(); 
+
+        removeEntry(e); // this manually written fnc, will both remove entry and update entry count
     }
+})
+
+function removeEntry(e) {
+    const entryToRemove = e.target.closest('.entry');
+    const targetInputContainer = entryToRemove.parentNode;
+
+    // Remove the selected entry
+    entryToRemove.remove();
+
+    // Re-render the remaining entries to update their labels and IDs
+    const remainingEntries = targetInputContainer.querySelectorAll('.entry');
+
+    remainingEntries.forEach((entry, index) => {
+        const newEntryNumber = index + 1;
+
+        // Update the label for the entry Name
+        const nameLabel = entry.querySelector('label[for*="-name"]');
+        nameLabel.setAttribute('for', `entry-${newEntryNumber}-name`);
+        nameLabel.textContent = `Entry ${newEntryNumber} Name`;
+
+        // Update input field for entry name
+        const nameInput = entry.querySelector('input[id*="-name"]');
+        nameInput.setAttribute('id', `entry-${newEntryNumber}-name`)
+
+        // Update the label for the entry Calories
+        const caloriesLabel = entry.querySelector('label[for*="-calories"]');
+        caloriesLabel.setAttribute('for', `entry-${newEntryNumber}-calories`);
+        caloriesLabel.textContent = `Entry ${newEntryNumber} Calories`;
+
+        // Update the input field for the entry Calories
+        const caloriesInput = entry.querySelector('input[id*="-calories"]');
+        caloriesInput.setAttribute('id', `entry-${newEntryNumber}-calories`);
+    })
 }
 
 // Function to calculate total calories and update the output
@@ -95,7 +123,32 @@ function calculateCalories(e) {
   <p>${budgetCalories} Calories Budgeted</p>
   <p>${consumedCalories} Calories Consumed</p>
   <p>${exerciseCalories} Calories Burned</p>
+  <canvas id="caloriesChart" width="400" height="200"></canvas>
   `;
+
+    // Create or update the chart
+    const ctx = document.getElementById('caloriesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut', // Type of the chart (bar, pie, doughnut, etc.)
+        data: {
+            labels: ['Budgeted', 'Consumed', 'Burned'], // Labels for the chart
+            datasets: [{
+                label: 'Calories', // Label for the dataset
+                data: [budgetCalories, consumedCalories, exerciseCalories], // Data points
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)', // Color for the first bar
+                    'rgba(255, 99, 132, 0.2)', // Color for the second bar
+                    'rgba(153, 102, 255, 0.2)'  // Color for the third bar
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)', // Border color for the first bar
+                    'rgba(255, 99, 132, 1)', // Border color for the second bar
+                    'rgba(153, 102, 255, 1)'  // Border color for the third bar
+                ],
+                borderWidth: 1 // Width of the border around each bar
+            }]
+        }
+    })
 
     output.classList.remove('hide'); // Make the output visible
 }
