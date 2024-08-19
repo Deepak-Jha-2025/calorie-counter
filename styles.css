@@ -1,39 +1,52 @@
+/* Add this to the top of your CSS */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&family=Poppins:wght@400;600&display=swap'); /* Adding Poppins for a more stylish font */
+
+/* Root variables */
 :root {
-    --light-grey: #f5f6f7;
-    --dark-blue: #0a0a23;
-    --fcc-blue: #1b1b32;
-    --light-yellow: #fecc4c;
-    --dark-yellow: #feac32;
-    --light-pink: #ffadad;
-    --dark-red: #850000;
-    --light-green: #acd157;
+    --bg-color: #e0f2f1; /* Slightly more saturated light greenish background */
+    --container-color: #f0f0f0; /* Light grayish white for a more muted container */
+    --text-color: #333333; /* Dark gray text color */
+    --button-bg: #4caf50; /* Green button color */
+    --button-hover-bg: #388e3c; /* Darker green for hover */
+    --button-text: #ffffff; /* White text on buttons */
+    --border-color: #d0d0d0; /* Slightly darker gray border color */
+    --shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow for more contrast */
+    --heading-color: #4caf50; /* Fresh green for headings */
+    --output-border-color: #4caf50; /* Matching border color for output */
+    --output-bg-color: #f0f0f0; /* Same as container background for consistency */
 }
 
 body {
-    font-family: "Lato", Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Stylish font for a more elegant look */
     font-size: 18px;
-    background-color: var(--fcc-blue);
-    color: var(--light-grey);
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 h1 {
     text-align: center;
+    color: var(--heading-color); /* Fresh green color for headings */
+    font-weight: 700; /* Bold font weight */
+    font-size: 2.8em; /* Slightly smaller font size for balance */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for better visibility */
+    margin-bottom: 20px; /* Space below heading */
 }
 
 .container {
     width: 90%;
     max-width: 680px;
-}
-
-h1,
-.container,
-.output {
+    background-color: var(--container-color); /* Light grayish white */
+    border-radius: 12px; /* Rounded corners for a softer look */
+    box-shadow: 0 6px 12px var(--shadow-color); /* Darker shadow for more depth */
+    padding: 20px;
     margin: 20px auto;
+    border: 1px solid var(--border-color);
 }
 
 label,
 legend {
     font-weight: bold;
+    color: var(--text-color);
 }
 
 .input-container {
@@ -43,16 +56,42 @@ legend {
 
 button {
     cursor: pointer;
-    text-decoration: none;
-    background-color: var(--light-yellow);
-    border: 2px solid var(--dark-yellow);
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    color: var(--button-text);
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    background-color: var(--button-hover-bg);
+    transform: translateY(-2px); /* Lift button slightly on hover */
+    box-shadow: 0 6px 12px var(--shadow-color); /* Darker shadow on hover */
+    color: var(--button-text);
+}
+
+#downloadPdfBtn {
+    margin-top: 20px;
 }
 
 button,
 input,
 select {
-    min-height: 24px;
-    color: var(--dark-blue);
+    min-height: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px;
+    color: var(--text-color);
+    background-color: var(--container-color);
+}
+
+button:focus,
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--button-hover-bg); /* Use button hover color for focus */
 }
 
 fieldset,
@@ -63,25 +102,80 @@ select {
     margin-bottom: 10px;
 }
 
+select {
+    font-family: 'Poppins', sans-serif; /* Consistent font with the rest of the UI */
+    font-size: 16px; /* Improved font size for better readability */
+    color: var(--text-color); /* Text color */
+    background-color: var(--container-color); /* Same as container background */
+    border: 1px solid var(--border-color); /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    transition: border-color 0.3s; /* Smooth transition for border color on focus */
+}
+
+select:focus {
+    border-color: var(--button-hover-bg); /* Use button hover color for focus */
+    outline: none; /* Remove default outline */
+}
+
 .output {
-    border: 2px solid var(--light-grey);
-    padding: 10px;
+    border: 2px solid var(--output-border-color); /* Matching border color for output */
+    background-color: var(--output-bg-color); /* Same as container background */
+    padding: 15px;
     text-align: center;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif; /* Elegant font for output */
+    font-weight: 600; /* Slightly bold font weight for emphasis */
+}
+
+.output span {
+    font-weight: bold;
+    font-size: 1.4em; /* Larger font size for output text */
+}
+
+/* Specific styles for surplus and deficit */
+.surplus {
+    color: #66bb6a; /* Green for surplus */
+}
+
+.deficit {
+    color: #e57373; /* Red for deficit */
 }
 
 .hide {
     display: none;
 }
 
-.output span {
-    font-weight: bold;
-    font-size: 1.2em;
+/* Media Queries */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2em; /* Smaller font size for better fit on smaller screens */
+    }
+
+    .container {
+        width: 95%;
+        padding: 15px; /* Reduced padding for smaller screens */
+    }
+    
+    button,
+    input,
+    select {
+        font-size: 16px; /* Slightly smaller font size */
+    }
 }
 
-.surplus {
-    color: var(--light-pink);
-}
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em; /* Even smaller font size for very small screens */
+    }
 
-.deficit {
-    color: var(--light-green);
+    .container {
+        width: 100%;
+        padding: 10px; /* Further reduced padding */
+    }
+
+    button,
+    input,
+    select {
+        font-size: 14px; /* Adjusted font size for very small screens */
+    }
 }

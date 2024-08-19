@@ -5,6 +5,7 @@ const entryDropdown = document.getElementById('entry-dropdown');
 const addEntryButton = document.getElementById('add-entry');
 const clearButton = document.getElementById('clear');
 const output = document.getElementById('output');
+
 let isError = false; // Flag to track if there's an error in the input
 
 // Function to clean up the input string by removing certain characters
@@ -150,6 +151,10 @@ function calculateCalories(e) {
         }
     })
 
+    output.insertAdjacentHTML('beforeend', `<button id="downloadPdfBtn">Download PDF Report</button>`);
+    const downloadButton = document.getElementById('downloadPdfBtn');
+    downloadButton.addEventListener('click', generatePDF);
+
     output.classList.remove('hide'); // Make the output visible
 }
 
@@ -187,7 +192,50 @@ function clearForm() {
     output.classList.add('hide');
 }
 
-// Event listeners for adding entries, calculating calories, and clearing the form
+function generatePDF() {
+    const doc = new jsPDF('p', 'mm', 'a4'); // Use 'mm' units for A4 page size
+
+    // Add the text data
+    doc.setFontSize(16);
+    doc.text('Calorie Report', 20, 20);
+    doc.setFontSize(12);
+
+    // Retrieve the data from the output section
+    const outputLines = output.querySelectorAll('p, span');
+    let yOffset = 30;
+
+    outputLines.forEach(line => {
+        doc.text(line.textContent, 20, yOffset);
+        yOffset += 10;
+    })
+
+    // Add the chart as an image
+    // Get the actual canvas element (not the context)
+    const canvas = document.getElementById('caloriesChart');
+
+    // Convert the chart on the canvas to an image in PNG format
+    const chartImage = canvas.toDataURL('image/png');
+
+    // Calculate appropriate dimensions for the image
+    const imgWidth = 180; // Width in mm
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+
+    // Ensure the height does not exceed page height
+    if(yOffset + imgHeight > doc.internal.pageSize.height - 20) {
+        // If the image does not fit, add a new page
+        doc.addPage();
+        yOffset = 20; // Reset yOffset for the new page
+    }
+
+    // Add the chart image to the PDF document
+    doc.addImage(chartImage, 'PNG', 15, yOffset, imgWidth, imgHeight);
+
+
+    // Save the PDF
+    doc.save('Calroie_Report.pdf');
+}
+
+// Event listeners for adding entries, calculating calories, clearing the form & downloading pdf
 addEntryButton.addEventListener("click", addEntry);
 calorieCounter.addEventListener("submit", calculateCalories);
 clearButton.addEventListener('click', clearForm);
